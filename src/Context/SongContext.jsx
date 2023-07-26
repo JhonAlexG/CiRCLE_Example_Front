@@ -5,8 +5,8 @@ import axios from "axios";
 export const SongContext = createContext();
 
 export function SongContextProvider(props) {
-  const [song, setSong] = useState([{}]);
-  const [songAux, setSongAux] = useState([{}]);
+  const [song, setSong] = useState([]);
+  const [songAux, setSongAux] = useState([]);
   const { band } = useContext(BandContext);
 
   const [filterByBand, setFilterByBand] = useState("");

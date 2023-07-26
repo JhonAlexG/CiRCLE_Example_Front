@@ -3,9 +3,9 @@ import axios from "axios";
 
 export const MemberContext = createContext();
 
-export function MemberContextProvider(props) {
-  const [member, setMember] = useState();
-  const [membersAux, setMembersAux] = useState();
+export function MemberContextProvider({ children }) {
+  const [member, setMember] = useState([]);
+  const [membersAux, setMembersAux] = useState([]);
 
   const url = "http://localhost:3000/api/members";
   const getMembers = async () => {
@@ -74,7 +74,7 @@ export function MemberContextProvider(props) {
         filterMembers: filterMembers,
       }}
     >
-      {props.children}
+      {children}
     </MemberContext.Provider>
   );
 }

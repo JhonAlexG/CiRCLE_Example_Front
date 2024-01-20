@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Register() {
+function Register({ setShowRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -26,7 +26,7 @@ function Register() {
       })
       .then((data) => {
         console.log(data);
-        navigate("/");
+        setShowRegister(false);
       })
       .catch((err) => {
         console.log(err);
@@ -81,10 +81,6 @@ function Register() {
         </div>
         <button>Register</button>
       </form>
-      <div>
-        <h3> Do you already have an account? </h3>
-        <button onClick={() => navigate("/")}>Login</button>
-      </div>
     </div>
   );
 }

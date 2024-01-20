@@ -36,6 +36,7 @@ function SongForm() {
         lyrics,
         eng_translation,
         esp_translation,
+        cover_img,
       });
     } else {
       createSong({

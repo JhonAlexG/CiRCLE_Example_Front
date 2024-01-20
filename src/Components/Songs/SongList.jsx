@@ -27,7 +27,10 @@ function SongList() {
           <h1>{songItem.title}</h1>
         </Link>
       ))}
-      <button onClick={() => navigate("/songs/addsong")}> New Song</button>
+      {(localStorage.getItem("userType") === "admin" ||
+        localStorage.getItem("userType") === "staff") && (
+        <button onClick={() => navigate("/songs/addsong")}> New Song</button>
+      )}{" "}
       <button onClick={() => navigate("/home")}> Back </button>
     </div>
   );

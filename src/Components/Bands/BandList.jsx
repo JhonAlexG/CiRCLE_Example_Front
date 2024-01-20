@@ -26,7 +26,11 @@ function BandList() {
       ))}
       <br></br>
       <button onClick={() => navigate("/home")}> Back </button>
-      <button onClick={() => navigate("/bands/addband")}>Add Band </button>
+
+      {(localStorage.getItem("userType") === "admin" ||
+        localStorage.getItem("userType") === "staff") && (
+        <button onClick={() => navigate("/bands/addband")}>Add Band </button>
+      )}
     </div>
   );
 }

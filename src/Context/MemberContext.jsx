@@ -9,14 +9,20 @@ export function MemberContextProvider({ children }) {
 
   const url = "http://localhost:3000/api/members";
   const getMembers = async () => {
-    const response = await axios.get(url);
+    const response = await axios.get(url, {
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
     setMember(response.data.members);
     setMembersAux(response.data.members);
   };
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) return;
+
     getMembers();
-  }, []);
+  }, [localStorage.getItem("token")]);
 
   async function createMember(newMember) {
     newMember.id = newMember.name.replaceAll(" ", "_");
@@ -26,6 +32,7 @@ export function MemberContextProvider({ children }) {
       .post(url, newMember, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "x-access-token": localStorage.getItem("token"),
         },
       })
       .then((data) => {
@@ -37,9 +44,36 @@ export function MemberContextProvider({ children }) {
       });
   }
 
+  async function updateMember(id, updatedMember) {
+    await axios
+      .put(`${url}/${id}`, updatedMember, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "x-access-token": localStorage.getItem("token"),
+        },
+      })
+      .then((data) => {
+        setMember(
+          member.map((member) => (member.id === id ? data.data.member : member))
+        );
+        setMembersAux(
+          membersAux.map((member) =>
+            member.id === id ? data.data.member : member
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   function deleteMember(id) {
     axios
-      .delete(`${url}/${id}`)
+      .delete(`${url}/${id}`, {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      })
       .then((data) => {
         setMember(member.filter((member) => member.id !== id));
       })
@@ -70,6 +104,7 @@ export function MemberContextProvider({ children }) {
         member: member,
         createMember: createMember,
         deleteMember: deleteMember,
+        updateMember: updateMember,
         getMemberById: getMemberById,
         filterMembers: filterMembers,
       }}

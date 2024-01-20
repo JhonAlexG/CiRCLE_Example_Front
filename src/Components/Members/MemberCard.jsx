@@ -24,19 +24,25 @@ function MemberCard() {
           <h3> Favorite Food: {member.likes}</h3>
           <h3> Least Favorite Food: {member.dislikes}</h3>
           <h3> Hobbies: {member.hobbies}</h3>
-          <button onClick={() => navigate("/members/edit/" + member.id)}>
-            {" "}
-            Edit{" "}
-          </button>
-          <button
-            onClick={() => {
-              deleteMember(member.id);
-              navigate("/members");
-            }}
-          >
-            {" "}
-            Delete{" "}
-          </button>
+
+          {(localStorage.getItem("userType") === "admin" ||
+            localStorage.getItem("userType") === "staff") && (
+            <>
+              <button onClick={() => navigate("/members/edit/" + member.id)}>
+                {" "}
+                Edit{" "}
+              </button>
+              <button
+                onClick={() => {
+                  deleteMember(member.id);
+                  navigate("/members");
+                }}
+              >
+                {" "}
+                Delete{" "}
+              </button>
+            </>
+          )}
           <button onClick={() => navigate("/members")}> Go Back </button>
         </>
       )}

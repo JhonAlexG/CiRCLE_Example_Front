@@ -23,16 +23,22 @@ function BandCard() {
       />
       <img className="charaIMG" src={band?.image.url} />
       <button onClick={() => navigate("/bands")}> Back </button>
-      <button onClick={() => editBand(band.id)}> Edit </button>
-      <button
-        onClick={() => {
-          deleteBand(band.id);
-          navigate("/bands");
-        }}
-      >
-        {" "}
-        Delete{" "}
-      </button>
+
+      {(localStorage.getItem("userType") === "admin" ||
+        localStorage.getItem("userType") === "staff") && (
+        <>
+          <button onClick={() => editBand(band.id)}> Edit </button>
+          <button
+            onClick={() => {
+              deleteBand(band.id);
+              navigate("/bands");
+            }}
+          >
+            {" "}
+            Delete{" "}
+          </button>
+        </>
+      )}
     </div>
   );
 }

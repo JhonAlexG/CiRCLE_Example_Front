@@ -5,15 +5,18 @@ export const BandContext = createContext();
 export function BandContextProvider(props) {
   const [band, setBand] = useState([]);
 
-  const url = "http://localhost:3000/api/bands";
+  const url = "mongodb://localhost:27017/";
   const getBands = async () => {
-    const response = await axios.get(url);
+    const response = await axios.get(url, {
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
     setBand(response.data.bands);
   };
-
   useEffect(() => {
-    getBands();
-  }, []);
+    if (localStorage.getItem("token")) getBands();
+  }, [localStorage.getItem("token")]);
 
   async function createBand(newBand) {
     newBand.id = newBand.name.replaceAll(" ", "_");
@@ -23,6 +26,7 @@ export function BandContextProvider(props) {
       .post(url, newBand, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "x-access-token": localStorage.getItem("token"),
         },
       })
       .then((data) => {
@@ -35,7 +39,11 @@ export function BandContextProvider(props) {
 
   function deleteBand(id) {
     axios
-      .delete(`${url}/${id}`)
+      .delete(`${url}/${id}`, {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      })
       .then((data) => {
         setBand(band.filter((band) => band.id !== id));
       })

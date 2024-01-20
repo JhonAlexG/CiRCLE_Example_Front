@@ -14,9 +14,11 @@ function Menu() {
         <li>
           <Link to={"/bands"}> Bandas </Link>
         </li>
-        <li>
-          <Link to={"/staff/addstaff"}> Agregar Staff </Link>
-        </li>
+        {localStorage.getItem("userType") === "admin" && (
+          <li>
+            <Link to={"/staff/addstaff"}> Agregar Staff </Link>
+          </li>
+        )}
       </ul>
     </div>
   );

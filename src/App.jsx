@@ -1,6 +1,5 @@
 import Menu from "./Components/Menu";
 import Login from "./Components/Navigation/Login";
-import Register from "./Components/Navigation/Register";
 import AddStaffForm from "./Components/Navigation/AddStaffForm";
 import SongList from "./Components/Songs/SongList";
 import SongCard from "./Components/Songs/SongCard";
@@ -25,7 +24,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="/staff/addstaff" element={<AddStaffForm />} />
         <Route path="/home" element={<Menu />} />
         <Route path="/songs" element={<SongList />} />

@@ -14,14 +14,20 @@ export function SongContextProvider(props) {
 
   const url = "http://localhost:3000/api/songs";
   const getSongs = async () => {
-    const response = await axios.get(url);
+    const response = await axios.get(url, {
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
     setSong(response.data.songs);
     setSongAux(response.data.songs);
   };
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) return;
+
     getSongs();
-  }, []);
+  }, [localStorage.getItem("token")]);
 
   useEffect(() => {
     if (!filterByBand && !filterByType) return setSong(songAux);
@@ -58,6 +64,7 @@ export function SongContextProvider(props) {
       .post(url, newSong, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "x-access-token": localStorage.getItem("token"),
         },
       })
       .then((data) => {
@@ -74,12 +81,11 @@ export function SongContextProvider(props) {
       .put(`${url}/${id}`, updatedSong, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "x-access-token": localStorage.getItem("token"),
         },
       })
       .then((data) => {
-        setSong(
-          song.map((song) => (song.id === id ? data.data.song : song))
-        );
+        setSong(song.map((song) => (song.id === id ? data.data.song : song)));
         setSongAux(
           songAux.map((song) => (song.id === id ? data.data.song : song))
         );
@@ -92,7 +98,11 @@ export function SongContextProvider(props) {
   function deleteSong(id) {
     //Delete from DB
     axios
-      .delete(`${url}/${id}`)
+      .delete(`${url}/${id}`, {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      })
       .then((data) => {
         setSong(song.filter((song) => song.id !== id));
       })

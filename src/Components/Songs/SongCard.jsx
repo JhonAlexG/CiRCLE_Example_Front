@@ -23,29 +23,27 @@ function SongCard() {
           </h1>
           <h2> {song.alt_title} </h2>
           <SongLyrics song={song} />
-          <button
-            onClick={() => {
-              deleteSong(song.id);
-              navigate("/songs");
-            }}
-          >
-            {" "}
-            Delete{" "}
-          </button>
-          <button onClick={() => navigate("/songs/edit/" + song.id)}>
-            {" "}
-            Edit{" "}
-          </button>
+
+          {(localStorage.getItem("userType") === "admin" ||
+            localStorage.getItem("userType") === "staff") && (
+            <>
+              <button
+                onClick={() => {
+                  deleteSong(song.id);
+                  navigate("/songs");
+                }}
+              >
+                {" "}
+                Delete{" "}
+              </button>
+              <button onClick={() => navigate("/songs/edit/" + song.id)}>
+                {" "}
+                Edit{" "}
+              </button>
+            </>
+          )}
+
           <button onClick={() => navigate("/songs")}> Back </button>
-          <button
-            onClick={() => {
-              deleteSong(song.id);
-              navigate("/songs");
-            }}
-          >
-            {" "}
-            Delete{" "}
-          </button>
         </>
       )}
     </div>

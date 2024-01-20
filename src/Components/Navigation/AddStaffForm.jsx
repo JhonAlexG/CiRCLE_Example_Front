@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function StaffForm() {
   const [name, setName] = useState("");
@@ -13,17 +14,22 @@ function StaffForm() {
 
   const HandleSubmit = async (e) => {
     e.preventDefault();
-    const url = "http://localhost:3000/api/register";
+    const url = "http://localhost:3000/api/staff";
     if (password !== passwordCheck) {
       return console.log("Passwords do not match");
     }
     axios
-      .post(url, {
-        name: name,
-        lastname: lastName,
-        email: email,
-        password: password,
-      })
+      .post(
+        url,
+        {
+          name: name,
+          lastname: lastname,
+          email: email,
+          password: password,
+          identification: identification,
+        },
+        { headers: { "x-access-token": localStorage.getItem("token") } }
+      )
       .then((data) => {
         console.log(data);
         navigate("/");
@@ -31,6 +37,13 @@ function StaffForm() {
       .catch((err) => {
         console.log(err);
       });
+
+    setName("");
+    setLastname("");
+    setEmail("");
+    setPassword("");
+    setPasswordCheck("");
+    setIdentification("");
   };
 
   return (
